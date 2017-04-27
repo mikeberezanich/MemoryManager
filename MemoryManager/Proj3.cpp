@@ -1,5 +1,18 @@
+/********************************************************************************************
 
-　
+File: 		Proj3.cpp
+Authors: 	Mike Berezanich
+		Ryan Gleason
+
+Date: 		4/26/2017
+
+Purpose:	Emulate a virtual memory manager using the following replacement policies:
+			1. First in, First Out (FIFO)
+			2. Least Recently Used (LRU)
+
+	
+*********************************************************************************************/
+
 #include "stdafx.h"
 #include <iostream>
 #include "virtualMemoryManagerInterface.hpp"
@@ -17,16 +30,19 @@ struct mem_map{
 //FIFO
 void firstInFirstOut() {
 
-	
+//do work here 	
+		
 }
 
 　
 //LRU
 void leastRecentlyUsed() {
 
+//do work here
+	
 }
 
-int memoryAccess(int logicalAddress) {
+unsigned long long memoryAccess(unsigned long long logicalAddress) {
 	int page, numSwaps, physicalAddress;
 	bool needed = false;
 
@@ -49,42 +65,36 @@ int memoryAccess(int logicalAddress) {
 
 	//swap necessary?
 	if (needed) {
-		swap();
+		swap(0,0);
 	} 
 	
-	
+	//"Function must not return until any page swapping is completed, if necessary"
 	return physicalAddress;
 }
 
-void swap() {
-	//numPageSwaps();
+void swap(unsigned int frameNumber, unsigned int pageNumber) {
+	//numberPageSwaps();
 	
+}
+
+//input from constructor: replacemenet policy, pageSize, numFrames, virtualAddressSpaceSize
+void storeInfo(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA) {
+
+	struct mem_map *mem = new mem_map;
+
+	mem->policy = p;
+	mem->pageSize = pS;
+	mem->numFrames = nF;
+	mem->virtualAddressSpaceSize = vA;
+
 }
 
 int main()
 {
-	//input from constructor: replacemenet policy, pageSize, numFrames, virtualAddressSpaceSize
-	//input logical address
-	//output: physical address
+	//input: logical address
+	//output: physical address	
 
-	/*
-	virtualMemoryManagerInterface(p, pS, nF, vA) {
-		mem.policy = p;
-		mem.pageSize = pS;
-		mem.numFrames = nF;
-		mem.virtualAddressSpaceSize = vA;
-	}
-	*/
-
-	int physicalAddress;
-	int logicalAddress = 0;
-
-	//virtualMemoryManagerInterface memoryManager; 
-	//Start the process
-	physicalAddress = memoryAccess(logicalAddress);
-	
-
-    return physicalAddress;
+    return 0;
 }
 
 　
