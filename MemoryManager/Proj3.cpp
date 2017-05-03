@@ -3,6 +3,7 @@
 File: 		Proj3.cpp
 Authors: 	Mike Berezanich
 		Ryan Gleason
+		Connor Kosmorsky
 
 Date: 		4/26/2017
 
