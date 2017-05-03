@@ -15,7 +15,7 @@ Purpose:	Emulate a virtual memory manager using the following replacement polici
 
 //#include "stdafx.h"
 #include <iostream>
-#include "memMan.h"
+#include "memoryManager.h"
 
 using namespace std;
 

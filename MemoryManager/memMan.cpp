@@ -1,11 +1,11 @@
 #include "memMan.h"
 
-memMan::memMan(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA) : virtualMemoryManagerInterface(p, ps, nF, vA)
+memoryManager::memoryManager(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA) : virtualMemoryManagerInterface(p, pS, nF, vA)
 {
 	//calls interface's constructor which I believe sets the attributes itself
 }
 
-unsigned long long memMan::memoryAccess(unsigned long long address)
+unsigned long long memoryManager::memoryAccess(unsigned long long address)
 {
 	int page, numSwaps, physicalAddress;
 	bool needed = false;
@@ -34,18 +34,18 @@ unsigned long long memMan::memoryAccess(unsigned long long address)
 	return physicalAddress;
 }
 
-void memMan::swap(unsigned int frameNumber, unsigned int pageNumber)
+void memoryManager::swap(unsigned int frameNumber, unsigned int pageNumber)
 {
 	
 }
 
-void memMan::firstInFirstOut() {
+void memoryManager::firstInFirstOut() {
 
 	//do work here 	
 
 }
 
-void memMan::leastRecentlyUsed() {
+void memoryManager::leastRecentlyUsed() {
 
 	//do work here
 

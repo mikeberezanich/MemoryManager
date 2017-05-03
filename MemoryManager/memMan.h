@@ -1,9 +1,9 @@
 #include "virtualMemoryManagerInterface.hpp"
 
-class memMan : public virtualMemoryManagerInterface
+class memoryManager : public virtualMemoryManagerInterface
 {
 public:
-	memMan(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA);
+	memoryManager(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA);
 	unsigned long long memoryAccess(unsigned long long address) override;
 	void swap(unsigned int frameNumber, unsigned int pageNumber);
 
