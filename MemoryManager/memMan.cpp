@@ -1,4 +1,4 @@
-#include "memMan.h"
+include "memMan.h"
 
 memoryManager::memoryManager(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA) : virtualMemoryManagerInterface(p, pS, nF, vA)
 {
@@ -21,9 +21,7 @@ unsigned long long memoryManager::memoryAccess(unsigned long long address)
 	//page is found by finding page that needs to be swapped
 	page = 0;
 
-
 	//if swap is needed make it true 
-
 
 	//swap necessary?
 	if (needed) {
