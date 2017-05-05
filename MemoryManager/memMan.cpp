@@ -1,50 +1,85 @@
-include "memMan.h"
+/********************************************************************************************
+
+File: 		memMan.cpp
+Authors: 	Mike Berezanich
+			Ryan Gleason
+			Connor Kosmorsky
+
+Date: 		4/26/2017
+
+Purpose:	Emulate a virtual memory manager using the following replacement policies:
+			1. First in, First Out (FIFO)
+			2. Least Recently Used (LRU)
+
+*********************************************************************************************/
+
+#include <vector>
+#include "memMan.h"
+
+vector<frame> memMap;
+unsigned int timer;
 
 memoryManager::memoryManager(ReplacementPolicy p, unsigned int pS, unsigned int nF, unsigned int vA) : virtualMemoryManagerInterface(p, pS, nF, vA)
 {
-	//calls interface's constructor which I believe sets the attributes itself
+	//calls interface's constructor to set replacement policy, page size, num frames, and virtual address space size
+
+	timer = 0;
+	memMap.resize(nF);
+
+	//initialize memMap frames
+	for (unsigned int i = 0; i < nF; i++) {
+		memMap[i].page = -1;
+		memMap[i].time = -1;
+	}
 }
 
 unsigned long long memoryManager::memoryAccess(unsigned long long address)
 {
-	int page, numSwaps, physicalAddress;
-	bool needed = false;
-	//depends which policy is being used
-	//FIFO
-	if (policy == FIFO) {
-		firstInFirstOut();
+	unsigned int minTime = memMap[0].time;
+	unsigned int nextFrame = 0;
+	unsigned long long pgNum = address / int(pow(2, N));
+	unsigned int offset = address % int(pow(2, N));
+	bool inMap = false;
+
+	timer++;
+
+	unsigned int i;
+	for (i = 0; i < numFrames && !inMap; i++) {
+		//empty frame available
+		if (memMap[i].time == -1) {
+			memMap[i].page = pgNum;
+			memMap[i].time = timer;
+			inMap = true;
+		}
+		//found in memMap
+		else if (memMap[i].page == pgNum) {
+			//only wanna update with LRU because we need to use the original times to determine next for FIFO
+			if (policy == LRU)
+				memMap[i].time = timer;
+
+			inMap = true;
+		}
+		//haven't found in memMap so keep track of next frame to go
+		else {
+			if (memMap[i].time < minTime) {
+				nextFrame = i;
+				minTime = memMap[i].time;
+			}
+		}
+
 	}
-	else if (policy == LRU) {
-		leastRecentlyUsed();
-	}
-	//find frame to insert page, determine if swap is necessary
-	//page is found by finding page that needs to be swapped
-	page = 0;
 
-	//if swap is needed make it true 
+	//if none of the pages in our map match the address's page, swap from main memory and update frame
+	if (!inMap) {
+		swap(nextFrame, memMap[nextFrame].page);
 
-	//swap necessary?
-	if (needed) {
-		swap(0, 0);
+		memMap[nextFrame].page = pgNum;
+		memMap[nextFrame].time = timer;
+
+		//physical address of the next frame
+		return nextFrame * (unsigned int)pow(2, N) + offset;
 	}
 
-	//"Function must not return until any page swapping is completed, if necessary"
-	return physicalAddress;
-}
-
-void memoryManager::swap(unsigned int frameNumber, unsigned int pageNumber)
-{
-	
-}
-
-void memoryManager::firstInFirstOut() {
-
-	//do work here 	
-
-}
-
-void memoryManager::leastRecentlyUsed() {
-
-	//do work here
-
+	//physical address of empty/found frame
+	return (i - 1) * (unsigned int)pow(2, N) + offset;
 }
